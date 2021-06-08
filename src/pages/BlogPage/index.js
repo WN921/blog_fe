@@ -10,6 +10,11 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/monokai-sublime.css';
 import MarkNav from 'markdown-navbar';
 import 'markdown-navbar/dist/navbar.css';
+import '../../static/style/components/markdown.css';
+import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
+import CodeBlock from './CodeBlock';
+
 function BlogPage(props) {
     const BlogInfo = props.BlogInfo;
     const renderer = new marked.Renderer();
@@ -21,7 +26,7 @@ function BlogPage(props) {
         tables: true,
         breaks: false,
         smartLists: true,
-        highlight: function(code){
+        highlight: function (code) {
             return hljs.highlightAuto(code).value
         }
     });
@@ -30,11 +35,7 @@ function BlogPage(props) {
         props.initPage(props.match.params.id);
 
     }, [])
-    let HTML;
-    if(JSON.stringify(BlogInfo) !== '{}'){
-        HTML = marked(BlogInfo.content);
-    }
-    // let 
+
     return (
         <>
             {
@@ -47,8 +48,10 @@ function BlogPage(props) {
                                 <CalendarTwoTone /><span className='list-icon-span'>修改：{BlogInfo.updatedAt}</span>
                                 <FolderTwoTone /><span className='list-icon-span'>JavaScript</span>
                             </div>
-                            <div className='blogPage-content' dangerouslySetInnerHTML={{__html:HTML}}>
-                                
+                            <div className='blogPage-content' >
+                                <ReactMarkdown plugins={[gfm]} children={BlogInfo.content} renderers={{
+                                    code: CodeBlock
+                                }}/>
                             </div>
                         </Col>
                         <Col className='comm-right' xs={0} sm={0} md={7} lg={5} xl={4}>
