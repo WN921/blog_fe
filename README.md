@@ -1,71 +1,101 @@
-# 这是一个个人博客的后端，使用了koa框架，具体内容待补充
-# Getting Started with Create React App
+# 项目简介
+博客网站前端前端的作用是从博客后端程序取得数据后展示，目前有首页（目录）、博客详情页两部分。  
+博客网站前端使用React作为UI层库，同时搭配了Redux、React-Redux、React-Router等常见的React相关库，使用Ant Design作为UI组件库，使用Axios进行HTTP通信，使用marked解析MarkDown格式字符串。
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 安装使用
+此前端项目使用create-react-app搭建，其开发过程依赖于Node.js，生成的Build文件夹后部署无需Node.js。在下载运行前，要确保已经安装了Node.js，最新稳定版即可。
+### 安装过程
+第一步，下载并安装依赖
+```
+//下载后端程序
+git clone https://github.com/WN921/blog_fe.git
 
-## Available Scripts
+// 进入项目目录后，安装运行依赖
+cd blog_fe
+npm install --registry=https://registry.npm.taobao.org
+```
 
-In the project directory, you can run:
+第二步，修改网络请求的配置文件。
+首先进入，项目下src/api目录，打开config.js文件，修改其中的baseUrl常量。将其修改后后端项目的URL（如：http://1.15.125.162:3100）。
 
-### `npm start`
+第三步，启动项目，运行无误后可二次开发，最后生成Build文件夹部署。
+```
+//启动项目
+npm start
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+//个人信息设置、二次开发参见下方
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+//生成build文件夹
+npm run build
+```
 
-### `npm test`
+## 网站页面简介
+### 首页
+首页分为三部分，顶栏、右侧栏、目录、底部。
+![](image\个人博客\博客网站前端-首页-1.PNG)
+![](image\个人博客\博客网站前端-首页-2.PNG)
+顶栏说明的是博客的标题、副标题，它们在任何尺寸的屏幕中都会显示。修改这两项应该在src/components/Headr.js文件中修改，直接修改字符串即可。  
+侧栏说明的是博主的个人信息，它在小屏幕中不会显示。修改这一项应该在src/components/Author.js中直接修改，修改字符串即可。  
+目录按照发布时间倒序显示博客中的文章，每一篇博客都会显示标题、简介、标签、创建、修改时间。点击即可进入详情页。为了让前端可以直接固定显示某一位用户的博客，需要在src/api/config.js中修改userId为合适的值。  
+底部说明的是备案号和网站的技术栈，这部分对应src/conponents/Footer.js。
+### 博客详情页
+![](image\个人博客\博客详情页.PNG)
+博客详情页包括标题、内容、右侧下方的导航栏。这里没有额外要配置的地方，如果目录能够正确获取博客列表，那么点击后它将自动请求点击博客的详细内容并解析。
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 源码结构
+```
+.
+|-- App.js
+|-- api
+|   |-- config.js
+|   `-- request.js
+|-- components
+|   |-- Author.js
+|   |-- Footer.js
+|   |-- Header.js
+|   `-- index.js
+|-- index.js
+|-- logo.svg
+|-- pages
+|   |-- BlogHome
+|   |   |-- components
+|   |   |   |-- BlogItem.js
+|   |   |   `-- index.js
+|   |   |-- index.js
+|   |   |-- store
+|   |   |   |-- actioncreators.js
+|   |   |   |-- constants.js
+|   |   |   |-- index.js
+|   |   |   `-- reducer.js
+|   |   `-- style.js
+|   |-- BlogPage
+|   |   |-- index.js
+|   |   `-- store
+|   |       |-- actioncreators.js
+|   |       |-- constants.js
+|   |       |-- index.js
+|   |       `-- reducer.js
+|   `-- index.js
+|-- static
+|   |-- Ace.jpg
+|   `-- style
+|       |-- components
+|       |   |-- author.css
+|       |   |-- footer.css
+|       |   `-- header.css
+|       `-- pages
+|           |-- blogPage.css
+|           `-- common.css
+`-- store
+    |-- index.js
+    `-- reducer.js
+```
 
-### `npm run build`
+* App.js和index.js是整个项目的入口。
+* api是HTTP接口相关的设置和接口包装。
+* components是首页基本组件。
+* pages里的两个文件夹对应两个页面，首页和详情页。
+* static里是一些css文件和图片。
+* store里是redux的全局reducer和store。
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+总体上博客网站前端的代码比较简单，熟悉react库的同学可直接上手。
