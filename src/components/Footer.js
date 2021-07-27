@@ -2,8 +2,7 @@ import '../static/style/components/footer.css'
 
 const Footer = () => (
     <div className='footer-div'>
-        {/* <div>系统由React+Node+Ant Design</div>
-         <div>网站域名：xxx</div> */}
+         <div><a href="https://beian.miit.gov.cn/#/Integrated/index">网站备案号：陕ICP备2021004145号-1</ a></div>
     </div>
 )
 
